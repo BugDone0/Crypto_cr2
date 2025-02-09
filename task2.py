@@ -45,7 +45,7 @@ def count_table(Ni, ni, i):
 
     return(table[-1][-2])
 
-def solve_task2():
+def solve_task2(a1, a2, a3, n1, n2, n3):
     # заполняется по вариантам
     a1=10
     a2=8

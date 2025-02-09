@@ -1,49 +1,52 @@
-filename="output3.txt"
-
 from mod import find_mod_ring
-a = 300
-b = 162
-m = 1000
+from counttable import count_table
+from sep import sep
+filename="output.txt"
 
-def write_table(table):
-    col_width = [5, 5, 5]  
-    with open(filename, "a") as file:
-        header = "|" + "|".join(item.center(col_width[i]) for i, item in enumerate(table[0])) + "|"
-        file.write(header + "\n")
-        file.write("-" * len(header) + "\n") 
-        for row in table[1:]:
-            row_str = "|" + "|".join(str(item).center(col_width[i]) for i, item in enumerate(row)) + "|"
-            file.write(row_str + "\n")
+def solve_task3(a ,b ,m):
 
-def count_table(a, m):
-    table = []
-    table.append(["r", "m", "a"])  
-    table.append(["-", m, a])  
-    if m>a:
-        a = m
-    while a != 0:
-        r = int(m % a)
-        new_m = a
-        new_a = r
-
-        table.append([r, new_m, new_a])
-        m = new_m
-        a = new_a
-
+    sep(3)
     
-    write_table(table)
-
-    with open(filename, "a") as file:
-        file.write(f"\nd = {table[-1][-2]}\n\n\n")
-
-    return(table[-1][-2])
-
-
-def solve_task3():
     with open(filename, "a") as file:    
         file.write(f"ax = b(mod m)\n")
         file.write(f"a = {a}, b = {b}, m = {m}\n\n")
-        d = count_table(a, m)
-        file.write(f"NOD(a,m) = NOD({a}, {m}) = {d}\n\n")
+    d = count_table(a, m, mode ="rma")
+    with open(filename, "a") as file:    
+        file.write(f"\nNOD(a,m) = NOD({a}, {m}) = {d} = d\n\n")
+            
 
-solve_task3()
+    if d == 1:
+        raise ValueError("Вариант решения не рассмотрен на лекции")
+    elif d > 1 and b % d != 0:
+        raise ValueError("Вариант решения не рассмотрен на лекции")
+    else:
+        a_ = a/d
+        b_ = b/d
+        m_ = m/d
+        a_1 = count_table(a_, m_, mode="qry")  
+        with open(filename, "a") as file:   
+            file.write(f"\n{int(a/d)}x ≡ {int(b/d)} mod {int(m/d)}\n")
+            file.write(f"¯a = {int(a/d)}, ¯b = {int(b/d)}, ¯m = {int(m/d)}\n")
+            file.write(f"{int(a/d)}^-1 mod {int(m/d)} = {a_1}\n\n")
+
+
+        with open(filename, "a") as file:  
+            file.write(f"x = ({int(a_1)} * {int(b_)}) mod {m} = {int(find_mod_ring(a_1 * b_, m_))}\n\n")
+
+        x = find_mod_ring(a_1 * b_, m_)
+        results = []
+        with open(filename, "a") as file:   
+            for k in range(d) :
+                result = int(find_mod_ring(x + m_ * k, m))
+                results.append(result)
+                file.write(f"x{k} = ({int(x)} + {int(m_)} * {k}) mod {m} = {result}\n")
+                
+        with open(filename, "a") as file:  
+            file.write(f"\n\nПроверка:\n")
+
+        with open(filename, "a") as file:   
+            for result in results:
+                if find_mod_ring(a * result, m) == b:
+                    file.write(f"({a} * {result}) mod {m} = {b}\n")  
+                else:
+                    raise ValueError("Что-то пошло не так: решение 2 задачи оказалось не верным, а помойным")

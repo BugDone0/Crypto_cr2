@@ -1,10 +1,9 @@
 from writetable import write_table
-
-def count_table(*args, mode="qrx"):
+filename="output.txt"
+def count_table(*args, mode):
 #2 задача 1-3 табл
     if mode == "qrx":
         Ni, ni, i = args
-        filename="output.txt"
         x1 = 0
         x2 = 1
         table = []
@@ -38,9 +37,12 @@ def count_table(*args, mode="qrx"):
     elif mode == "rma":
         a, m = args
         table = []
-        table.append(["r", "a", "b"])  
-        if a < m:
+         
+        if a > m:
             a, m = m, a 
+            table.append(["r", "a", "m"]) 
+        else:
+            table.append(["r", "m", "a"]) 
 
         table.append(["-", m, a])  
         while a != 0:
@@ -57,7 +59,40 @@ def count_table(*args, mode="qrx"):
 
         return(table[-1][-2])
     
+    #3 задача 2 табл
+    elif mode == "qry":
+        a, m = args
+        y1 = 1
+        y2 = 0
+        table = []
+        if a > m:
+            a, m = m, a 
+            table.append(["q", "r", "y", "¯a", "¯m", "y2", "y1"]) 
+        else:
+            table.append(["q", "r", "y", "¯m", "¯a", "y2", "y1"])  
+
+        table.append(["-", "-", "-", int(m), int(a), y2, y1])  
+
+        while a != 0:
+            q = int(m // a)
+            r = int(m % a)
+            y = y2 - q * y1
+            new_m = int(a)
+            new_a = r
+            new_y2 = y1
+            new_y1 = y
+
+            table.append([q, r, y, new_m, new_a, new_y2, new_y1])
+
+            m = new_m
+            a = new_a
+            y1 = new_y1
+            y2 = new_y2
+
+        write_table(table)
+
+        return(table[-1][-2])
+    
     else:
         raise ValueError("Недопустимый режим. Доступные режимы: 'qrx', 'rma' и тп")
     
-    #3 задача 2 табл

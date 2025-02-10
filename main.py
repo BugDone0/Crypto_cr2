@@ -11,7 +11,7 @@ def main():
 
     # Выбираем вариант
     # Вариант 11 тестовый (из лекции по подготовке)
-    variant_number = 6
+    variant_number = 10
     sep(0,variant_number)
     variables = get_variant(variant_number)
 

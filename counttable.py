@@ -1,6 +1,6 @@
 from writetable import write_table
 filename="output.txt"
-def count_table(*args, mode):
+def count_table(*args, avel="¯a", bvel="¯m" ,  mode):
 #2 задача 1-3 табл
     if mode == "qrx":
         Ni, ni, i = args
@@ -67,9 +67,9 @@ def count_table(*args, mode):
         table = []
         if a > m:
             a, m = m, a 
-            table.append(["q", "r", "y", "¯a", "¯m", "y2", "y1"]) 
+            table.append(["q", "r", "y", avel, bvel, "y2", "y1"]) 
         else:
-            table.append(["q", "r", "y", "¯m", "¯a", "y2", "y1"])  
+            table.append(["q", "r", "y", bvel, avel, "y2", "y1"])  
 
         table.append(["-", "-", "-", int(m), int(a), y2, y1])  
 

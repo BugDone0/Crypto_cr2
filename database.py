@@ -1,7 +1,5 @@
 def get_variant(variant_number):
-    """
-    Возвращает переменные для указанного варианта.
-    """
+
     if 1 <= variant_number <= len(variants):
         return variants[variant_number - 1]
     else:
